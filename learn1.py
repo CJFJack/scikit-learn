@@ -68,3 +68,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_
 # print(arr2)
 
 print(X_train.describe().T)
+
+ss = StandardScaler()
+X_train = ss.fit_transform(X_train)
+X_test = ss.fit_transform(X_test)
