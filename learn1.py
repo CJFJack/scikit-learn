@@ -14,7 +14,7 @@ mpl.rcParams['font.family'] = 'sans-serif'
 mpl.rcParams['font.sans-serif'] = 'SimHei'
 mpl.rcParams['axes.unicode_minus'] = False
 
-path1 = r'datas/household_power_consumption_10000.txt'
+path1 = r'datas/household_power_consumption_1000.txt'
 df = pd.read_csv(path1, sep=';', low_memory=False)
 # print(type(df))
 # print(df.index)
