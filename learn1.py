@@ -14,7 +14,7 @@ mpl.rcParams['font.family'] = 'sans-serif'
 mpl.rcParams['font.sans-serif'] = 'SimHei'
 mpl.rcParams['axes.unicode_minus'] = False
 
-path1 = r'datas/household_power_consumption_10000W .txt'
+path1 = r'datas/household_power_consumption_10000.txt'
 df = pd.read_csv(path1, sep=';', low_memory=False)
 # print(type(df))
 # print(df.index)
@@ -66,17 +66,17 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_
 # arr2 = np.random.randint(1, 11, (10, ))
 # print(arr2)
 
-print(X_train.describe().T)
+# print(X_train.describe().T)
 
 ss = StandardScaler()
 # 训练加转化
 X_train = ss.fit_transform(X_train)
-# 转化
+# 直接转化
 X_test = ss.transform(X_test)
 # print(type(X_train))
 # print(pd.DataFrame(X_train).describe().T)
 
-# fit_intercept=True表示特征系数w0
+# fit_intercept=True表示要加上特征系数w0
 # normalize=False表示不使用内置的数据标准化模块
 # copy_X=True表示不改变原数据
 # n_jobs表示并行任务数
@@ -99,8 +99,8 @@ print('模型的截距:', lr.intercept_)
 
 t = np.arange(len(X_test))
 plt.figure(facecolor='w')
-plt.plot(t, Y_test, 'r--', linewidth=2, label='真实值')
-plt.plot(t, y_predict, 'g--', linewidth=2, label='预测值')
+plt.plot(t, Y_test, 'r-', linewidth=2, label='真实值')
+plt.plot(t, y_predict, 'g-', linewidth=2, label='预测值')
 
 plt.legend(loc='upper left')
 plt.title('线性回归预测时间和功率之间的关系', fontsize=20)
