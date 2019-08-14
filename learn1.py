@@ -86,7 +86,7 @@ y_predict = lr.predict(X_test)
 
 # R^2代表预测的准确率
 print('训练集上的R^2：', lr.score(X_train, Y_train))
-print('训练集上的R^2：', lr.score(X_test, Y_test))
+print('测试集上的R^2：', lr.score(X_test, Y_test))
 
 # mse = np.average((y_predict - Y_test) ** 2)
 # rmse = np.sqrt(mse)
