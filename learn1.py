@@ -104,5 +104,6 @@ plt.plot(t, y_predict, 'g-', linewidth=2, label='预测值')
 
 plt.legend(loc='upper left')
 plt.title('线性回归预测时间和功率之间的关系', fontsize=20)
+# 网格
 plt.grid(b=True)
 plt.show()
