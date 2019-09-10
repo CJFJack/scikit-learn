@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-
+"""
+预测时间和有用功率之间的关系
+"""
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
