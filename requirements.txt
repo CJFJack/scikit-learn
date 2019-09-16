@@ -4,3 +4,4 @@ joblib
 scikit-learn
 panda
 matplotlib
+seaborn

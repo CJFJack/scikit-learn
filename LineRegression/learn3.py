@@ -19,7 +19,7 @@ mpl.rcParams['font.sans-serif'] = 'SimHei'
 mpl.rcParams['axes.unicode_minus'] = False
 
 # 读取文件
-path1 = r'datas/household_power_consumption_1000.txt'
+path1 = r'../datas/household_power_consumption_1000.txt'
 df = pd.read_csv(path1, sep=';', low_memory=False)  # 数据使用;分割
 
 # 异常数据的处理
