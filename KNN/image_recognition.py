@@ -18,6 +18,7 @@ http://www.cs.toronto.edu/~kriz/cifar.html
 from load_data import load_CIFAR10  # 感谢这个magic函数，你不必要担心如何写读取的过程。如果想了解细节，可以参考此文件。
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 cifar10_dir = '../datas/cifar-10-batches-py'  # 定义文件夹的路径：请不要修改此路径！ 不然提交后的模型不能够运行。
 
@@ -34,8 +35,15 @@ num_classes = len(classes)  # 样本种类的个数
 samples_per_class = 5  # 每一个类随机选择5个样本
 
 # TODO 图片展示部分的代码需要在这里完成。 hint:  plt.subplot函数以及 plt.imshow函数用来展示图片
-plt.imshow(X_train[0, :, :, :])
+for idx, cls in enumerate(classes):
+    ran_list = random.sample(list(np.argwhere(y_train == idx)[:, 0]), samples_per_class)
+    for r_idx, r in enumerate(ran_list):
+        plt.subplot(5, 10, idx+1+(r_idx*10))
+        plt.imshow(X_train[r, :, :, :] / 255)
+        plt.axis('off')
+
 plt.show()
+
 
 # TODO 统计并展示每一个类别出现的次数
 
