@@ -19,6 +19,7 @@ from load_data import load_CIFAR10  # 感谢这个magic函数，你不必要担�
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+from collections import defaultdict
 
 cifar10_dir = '../datas/cifar-10-batches-py'  # 定义文件夹的路径：请不要修改此路径！ 不然提交后的模型不能够运行。
 
@@ -46,6 +47,10 @@ plt.show()
 
 
 # TODO 统计并展示每一个类别出现的次数
+class_dict = defaultdict(int)
+for y in y_train:
+    class_dict[classes[y]] += 1
+print(dict(class_dict))
 
 
 # TODO 随机采样训练样本5000个和测试样本500个。训练样本从训练集里采样，测试样本从测试集里采样。
