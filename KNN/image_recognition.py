@@ -39,12 +39,12 @@ samples_per_class = 5  # 每一个类随机选择5个样本
 for idx, cls in enumerate(classes):
     ran_list = random.sample(list(np.argwhere(y_train == idx)[:, 0]), samples_per_class)
     for r_idx, r in enumerate(ran_list):
-        plt.subplot(5, 10, idx+1+(r_idx*10))
+        plt.subplot(5, 10, idx + 1 + (r_idx * 10))
         plt.imshow(X_train[r, :, :, :] / 255)
         plt.axis('off')
+        plt.title(cls)
 
 plt.show()
-
 
 # TODO 统计并展示每一个类别出现的次数
 class_dict = defaultdict(int)
@@ -52,15 +52,17 @@ for y in y_train:
     class_dict[classes[y]] += 1
 print(dict(class_dict))
 
-
 # TODO 随机采样训练样本5000个和测试样本500个。训练样本从训练集里采样，测试样本从测试集里采样。
 num_training = 5000
 num_test = 500
 
-# X_train =
-# y_train =
-#
-# X_test =
-# y_test =
+train_row_rand_array = np.arange(X_train.shape[0])
+np.random.shuffle(train_row_rand_array)
+X_train = X_train[train_row_rand_array[0:num_training], :, :, :]
+y_train = y_train[train_row_rand_array[0:num_training]]
+
+test_row_rand_array = np.arange(X_test.shape[0])
+X_test = X_test[test_row_rand_array[0:num_test], :, :, :]
+y_test = y_test[test_row_rand_array[0:num_test]]
 
 print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
