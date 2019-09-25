@@ -44,7 +44,8 @@ for idx, cls in enumerate(classes):
         plt.subplot(5, 10, idx + 1 + (r_idx * 10))
         plt.imshow(X_train[r, :, :, :] / 255)
         plt.axis('off')
-        plt.title(cls)
+        if r_idx == 0:
+            plt.title(cls)
 
 plt.show()
 
@@ -93,8 +94,6 @@ dist(x,y)=(∑i~d|xi−yi|^p)^(1/p)
 X_train1 = np.reshape(X_train, (X_train.shape[0], -1))
 X_test1 = np.reshape(X_test, (X_test.shape[0], -1))
 print(X_train1.shape, X_test1.shape)  # 确保维度正确
-print(X_train1)
-print(y_train)
 
 # 使用K折交叉验证去训练最好的KNN模型，并给出最好的交叉验证的结果（准确率）和在测试集上的准确率。
 # 需要搜索的参数为K和p。对于交叉验证，在这里使用GridSearchCV,这是一种参数搜索的方法也叫作网格搜索，
@@ -105,12 +104,40 @@ params_k = [1, 3, 5, 7, 9, 11, 13]  # 可以选择的K值
 params_p = [1, 2, 3]  # 可以选择的P值
 
 # 构建模型
-parameters = {'n_neighbors': params_k, 'p': params_p}
+parameters = {'n_neighbors': params_k}
 knn = KNeighborsRegressor()
 model = GridSearchCV(knn, parameters, cv=5)
 model.fit(X_train1, y_train)
 
 # 输出最好的K和p值
 print(model.best_params_)
+# 输出训练集分数
+print(model.best_score_)
 
 # 输出在测试集上的准确率
+knn_clf = model.best_estimator_
+y_pre = knn_clf.predict(X_test1)
+print(knn_clf.score(X_test1, y_pre))
+
+"""
+3. 抽取图片特征，再用KNN算法来识别图片
+在课程里也讲过，一种解决图像识别问题中各种环境不一致的方案是抽取对这些环境因素不敏感的特征。这就是所谓的特征工程。 在这里，我们即将会提取两种类型的特征，分别是color histogram和HOG特征，并把它们拼接在一起作为最终的特征向量。 至于这些特征的概念请参考第三章的内容，或者网络上的一些解释。我们已经提供了抽取特征的工具，只需要调用就可以使用了。 所以你需要做的任务是：
+
+调用特征提取工具给每一个图片提取特征。 如果想深入了解，可以查看其代码
+使用K折交叉验证去学出最好的模型（同上）
+"""
+
+from features import *
+
+num_color_bins = 10 # 设定color histogram的 bin大小
+
+# 分别设置接下来需要调用的两个特征抽取器，分别是hog_feature, color_histogram_hsv
+feature_fns = [hog_feature, lambda img: color_histogram_hsv(img, nbin=num_color_bins)]
+
+# 抽取特征，分别对特征数据和测试数据，把结果存放在X_train2和X_test2
+X_train2 = extract_features(X_train, feature_fns, verbose=True)
+#X_val_feats = extract_features(X_val, feature_fns)
+X_test2 = extract_features(X_test, feature_fns)
+
+# 打印转换后的数据大小。
+print (X_train2.shape, X_test2.shape)
