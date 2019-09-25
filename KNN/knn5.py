@@ -10,6 +10,7 @@ from sklearn.neighbors import KNeighborsClassifier
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
+print(y)
 
 # 设置需要搜索的K值， 'n_neighbors'是sklearn中KNN的参数
 parameters = {'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15]}

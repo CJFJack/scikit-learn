@@ -20,6 +20,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 from collections import defaultdict
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import GridSearchCV  # 通过网格方式来搜索参数
 
 cifar10_dir = '../datas/cifar-10-batches-py'  # 定义文件夹的路径：请不要修改此路径！ 不然提交后的模型不能够运行。
 
@@ -66,3 +68,49 @@ X_test = X_test[test_row_rand_array[0:num_test], :, :, :]
 y_test = y_test[test_row_rand_array[0:num_test]]
 
 print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
+
+"""
+2. 使用KNN算法识别图片。
+这部分主要的工作是通过K折交叉验证来训练KNN，以及选择最合适的K值和p值。
+具体KNN的描述请看官方文档： https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html
+
+KNN有几个关键的参数：
+
+K: 指定选择多少个neighbors。 这个值越大，我们知道KNN的决策边界就会越平滑，而且越不容易过拟合， 但不保证准确率会很高。
+p: 不同距离的指定，看以下的说明。
+
+KNN依赖于两个样本的距离计算，这里简单介绍一下一个概念叫做Minkowski Distance，是一个种通用的距离计算方法。
+假如我们有两个点，分别由两个向量来表达 x=(x1,x2,...,xd) 和 y=(y1,y2,...,yd) ，这时候根据Minkowski Distance的定义可以得到以下的结果：
+
+dist(x,y)=(∑i~d|xi−yi|^p)^(1/p)
+ 
+从上述的距离来看其实不难发现 p=1 时其实就是绝对值的距离， p=2 时就是欧式距离。
+所以欧式距离其实是Minkowski Distance的一个特例而已。所以这里的 p 值是可以调节的比如 p=1,2,3,4,... 。
+
+"""
+# 首先我们 Reshape一下图片。图片是的每一个图片变成一个向量的形式。也就是把原来大小为(32, 32, 3)的图片直接转换成一个长度为32*32*3=3072的向量。
+# 这样就直接可以作为模型的输入。 X_train_1和y_train_1是用来解决第一个问题的处理后的数据。
+X_train1 = np.reshape(X_train, (X_train.shape[0], -1))
+X_test1 = np.reshape(X_test, (X_test.shape[0], -1))
+print(X_train1.shape, X_test1.shape)  # 确保维度正确
+print(X_train1)
+print(y_train)
+
+# 使用K折交叉验证去训练最好的KNN模型，并给出最好的交叉验证的结果（准确率）和在测试集上的准确率。
+# 需要搜索的参数为K和p。对于交叉验证，在这里使用GridSearchCV,这是一种参数搜索的方法也叫作网格搜索，
+# 其实就是考虑所有的组合。 比如K=[1,3,5,7], p=[1,2,3], 则通过网格搜索会考虑所有可能的 12 种组合。
+# TODO 通过K折交叉验证构造最好的KNN模型，并输出最好的模型参数，以及测试集上的准确率。
+# 训练数据： （X_train1, y_train）, 测试数据：(X_test1, y_test)
+params_k = [1, 3, 5, 7, 9, 11, 13]  # 可以选择的K值
+params_p = [1, 2, 3]  # 可以选择的P值
+
+# 构建模型
+parameters = {'n_neighbors': params_k, 'p': params_p}
+knn = KNeighborsRegressor()
+model = GridSearchCV(knn, parameters, cv=5)
+model.fit(X_train1, y_train)
+
+# 输出最好的K和p值
+print(model.best_params_)
+
+# 输出在测试集上的准确率
