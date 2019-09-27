@@ -22,6 +22,7 @@ import random
 from collections import defaultdict
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV  # 通过网格方式来搜索参数
+from sklearn.decomposition import PCA
 
 cifar10_dir = '../datas/cifar-10-batches-py'  # 定义文件夹的路径：请不要修改此路径！ 不然提交后的模型不能够运行。
 
@@ -169,6 +170,7 @@ TODO 使用K折交叉验证去训练最好的KNN模型，并给出最好的交�
 params_k = [1, 3, 5, 7, 9, 11, 13]  # 可以选择的K值
 params_p = [1, 2, 3]  # 可以选择的P值
 
+"""
 # 构建模型
 parameters = {'n_neighbors': params_k, 'p': params_p}
 knn = KNeighborsRegressor()
@@ -184,6 +186,7 @@ print(model.best_score_)
 knn_clf = model.best_estimator_
 y_pre = knn_clf.predict(X_test2)
 print(knn_clf.score(X_test2, y_pre))
+"""
 
 """
 4. 使用PCA对图片做降维，并做可视化
@@ -207,14 +210,31 @@ params_p = [1, 2, 3]  # 可以选择的P值
 
 # TODO  首先使用PCA对数据做降维，之后再用KNN做交叉验证。 每一个PCA的维度都需要做一次KNN的交叉验证过程。
 #       输入为原始的像素特征。 训练数据：X_train,  y_train  测试数据： X_test, y_test。
-X_train3 = ''
-X_test3 = ''
 
-# 输出最好的 维度、K和p值
 
+pca = PCA(n_components=2)
+X_train3 = X_train.reshape(X_train.shape[0], -1)
+X_test3 = X_test.reshape(X_test.shape[0], -1)
+pca.fit(X_train3)
+pca.fit(X_test3)
+print(X_train3.shape, X_test3.shape)
+
+
+# 构建模型
+parameters = {'n_neighbors': params_k, 'p': params_p}
+knn = KNeighborsRegressor()
+model = GridSearchCV(knn, parameters, cv=5)
+model.fit(X_train3, y_train)
+
+# 输出最好的K和p值
+print(model.best_params_)
+# 输出训练集分数
+print(model.best_score_)
 
 # 输出在测试集上的准确率
-
+knn_clf = model.best_estimator_
+y_pre = knn_clf.predict(X_test2)
+print(knn_clf.score(X_test3, y_pre))
 
 """
 TODO 把数据映射到2维的空间，然后展示。 从X_train中随机选择50个图片做展示, 请使用subplots. 具体来讲的话：
