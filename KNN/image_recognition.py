@@ -57,8 +57,8 @@ for y in y_train:
 print(dict(class_dict))
 
 # TODO 随机采样训练样本5000个和测试样本500个。训练样本从训练集里采样，测试样本从测试集里采样。
-num_training = 5000
-num_test = 500
+num_training = 500
+num_test = 50
 
 train_row_rand_array = np.arange(X_train.shape[0])
 np.random.shuffle(train_row_rand_array)
@@ -85,7 +85,7 @@ KNN依赖于两个样本的距离计算，这里简单介绍一下一个概念�
 假如我们有两个点，分别由两个向量来表达 x=(x1,x2,...,xd) 和 y=(y1,y2,...,yd) ，这时候根据Minkowski Distance的定义可以得到以下的结果：
 
 dist(x,y)=(∑i~d|xi−yi|^p)^(1/p)
- 
+
 从上述的距离来看其实不难发现 p=1 时其实就是绝对值的距离， p=2 时就是欧式距离。
 所以欧式距离其实是Minkowski Distance的一个特例而已。所以这里的 p 值是可以调节的比如 p=1,2,3,4,... 。
 
@@ -219,7 +219,6 @@ pca.fit(X_train3)
 pca.fit(X_test3)
 print(X_train3.shape, X_test3.shape)
 
-
 # 构建模型
 parameters = {'n_neighbors': params_k, 'p': params_p}
 knn = KNeighborsRegressor()
@@ -233,7 +232,7 @@ print(model.best_score_)
 
 # 输出在测试集上的准确率
 knn_clf = model.best_estimator_
-y_pre = knn_clf.predict(X_test2)
+y_pre = knn_clf.predict(X_test3)
 print(knn_clf.score(X_test3, y_pre))
 
 """
