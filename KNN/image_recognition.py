@@ -57,8 +57,8 @@ for y in y_train:
 print(dict(class_dict))
 
 # TODO 随机采样训练样本5000个和测试样本500个。训练样本从训练集里采样，测试样本从测试集里采样。
-num_training = 5000
-num_test = 500
+num_training = 500
+num_test = 50
 
 train_row_rand_array = np.arange(X_train.shape[0])
 np.random.shuffle(train_row_rand_array)
@@ -104,9 +104,9 @@ print(X_train1.shape, X_test1.shape)  # 确保维度正确
 params_k = [1, 3, 5, 7, 9, 11, 13]  # 可以选择的K值
 params_p = [1, 2, 3]  # 可以选择的P值
 
-"""
+
 # 构建模型
-parameters = {'n_neighbors': params_k}
+parameters = {'n_neighbors': params_k, 'p': params_p}
 knn = KNeighborsRegressor()
 model = GridSearchCV(knn, parameters, cv=5)
 model.fit(X_train1, y_train)
@@ -120,7 +120,7 @@ print(model.best_score_)
 knn_clf = model.best_estimator_
 y_pre = knn_clf.predict(X_test1)
 print(knn_clf.score(X_test1, y_pre))
-"""
+
 
 """
 3. 抽取图片特征，再用KNN算法来识别图片
@@ -170,7 +170,7 @@ TODO 使用K折交叉验证去训练最好的KNN模型，并给出最好的交�
 params_k = [1, 3, 5, 7, 9, 11, 13]  # 可以选择的K值
 params_p = [1, 2, 3]  # 可以选择的P值
 
-"""
+
 # 构建模型
 parameters = {'n_neighbors': params_k, 'p': params_p}
 knn = KNeighborsRegressor()
@@ -186,7 +186,7 @@ print(model.best_score_)
 knn_clf = model.best_estimator_
 y_pre = knn_clf.predict(X_test2)
 print(knn_clf.score(X_test2, y_pre))
-"""
+
 
 """
 4. 使用PCA对图片做降维，并做可视化
@@ -233,7 +233,7 @@ print(model.best_score_)
 
 # 输出在测试集上的准确率
 knn_clf = model.best_estimator_
-y_pre = knn_clf.predict(X_test2)
+y_pre = knn_clf.predict(X_test3)
 print(knn_clf.score(X_test3, y_pre))
 
 """
