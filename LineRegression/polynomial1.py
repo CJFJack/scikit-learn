@@ -129,6 +129,7 @@ for i, d in enumerate(d_pool):
 
     # 画图
     z = N - 1 if d == 2 else 0
+    
     label = u'%d阶，准确率=%.3f' % (d, s)
     plt.plot(t, y_hat, color=clrs[i], lw=line_width, alpha=0.75, label=label, zorder=z)
     plt.legend(loc='upper left')
