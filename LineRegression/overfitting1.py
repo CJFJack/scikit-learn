@@ -153,7 +153,7 @@ for t in range(4):
         # 当d等于5的时候，设置为N-1层，其他设置为0层；将d=5得这条线凸显出来
         Z = N + 1 if d == 5 else 0
         label = u'%d阶，正确率%.3f' % (d, s)
-        plt.plot(x_hat, y_hat, color=colors[i], lw=2, alpha=0.75, label=label, zorder=z)
+        plt.plot(x_hat, y_hat, color=colors[i], lw=2, alpha=0.75, label=label, zorder=Z)
 
     plt.legend(loc='upper left')
     plt.grid(True)
