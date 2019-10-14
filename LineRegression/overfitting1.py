@@ -14,13 +14,14 @@ import warnings
 from sklearn.linear_model import LinearRegression, LassoCV, RidgeCV, ElasticNetCV
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model.coordinate_descent import ConvergenceWarning
+from sklearn.exceptions import ConvergenceWarning
 
 # 设置字符集，防止中文乱码
 mpl.rcParams['font.sans-serif'] = [u'simHei']
 mpl.rcParams['axes.unicode_minus'] = False
 # 拦截异常
 warnings.filterwarnings(action='ignore', category=ConvergenceWarning)
+warnings.filterwarnings(action='ignore', category=FutureWarning)
 
 # 创建模型数据
 np.random.seed(100)
@@ -105,6 +106,7 @@ plt.tight_layout(1, rect=(0, 0, 1, 0.95))
 plt.suptitle(u'线性回归过拟合显示', fontsize=22)
 plt.show()
 
+
 # 线性回归，Lasso回归，Ridge回归，ElasticNet比较
 plt.figure(facecolor='w')
 degree = np.arange(1, N, 2)
@@ -140,7 +142,7 @@ for t in range(4):
             idx = output.find(u'系数')
             output = output[:idx] + (u'l1_radio=%.6f, ' % lin.l1_radio) + output[idx:]
         # line.coef_: 获取线性模型的参数列表，也就是我们ppt中的theta值，ravel()将结果转换为行列式
-        print(output, lin.coef_ravel())
+        print(output, lin.coef_.ravel())
 
         # 产生模拟数据
         x_hat = np.linspace(x.min(), x.max(), num=100)
@@ -151,16 +153,16 @@ for t in range(4):
         s = model.score(x, y)
 
         # 当d等于5的时候，设置为N-1层，其他设置为0层；将d=5得这条线凸显出来
-        Z = N + 1 if d == 5 else 0
+        z = N + 1 if d == 5 else 0
         label = u'%d阶，正确率%.3f' % (d, s)
-        plt.plot(x_hat, y_hat, color=colors[i], lw=2, alpha=0.75, label=label, zorder=Z)
+        plt.plot(x_hat, y_hat, color=colors[i], lw=2, alpha=0.75, label=label, zorder=z)
 
     plt.legend(loc='upper left')
     plt.grid(True)
     plt.title(titles[t])
-    plt.xlabel('X', fontdict=16)
-    plt.ylabel('Y', fontdict=16)
+    plt.xlabel('X', fontsize=16)
+    plt.ylabel('Y', fontsize=16)
 
-plt.tight_layout(1, rect=(0,0,1,0.95))
+plt.tight_layout(1, rect=(0, 0, 1, 0.95))
 plt.suptitle(u'各种不同线性回归过拟合显示', fontsize=22)
 plt.show()
